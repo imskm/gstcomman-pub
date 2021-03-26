@@ -76,6 +76,8 @@ curl -X POST -d "phone=9881924450" http://127.0.0.1:8888/api/v1/auth/login
 ```
 **Response** `200` on successful `422` on validation error, `500` on internal server error
 An OTP will be sent to give phone number. For the testing purpose OTP is `019283`.
+**NOTE**: If you get response code `422` then hit this api `curl -X POST -d "otp=019283" http://127.0.0.1:8888/api/v1/auth/verify`.
+As the OTP is hard coded so many time you will get `422`, so just verify OTP then OTP will be cleared from db and you will be good to go.
 
 3. `/api/v1/auth/verify`
 ```console
@@ -97,3 +99,21 @@ curl -X POST -d "otp=019283" http://127.0.0.1:8888/api/v1/auth/verify
 	"updated_at":"2021-03-21T16:26:43.998749"
 }
 ```
+
+All `/store` api call will return created resource in JSON and status will be `201` (created).
+All `422` response will always returns JSON representing error in response body
+```json
+{
+	"status": "error",
+	"msg": "Error(s) in the form",
+	"error": {
+		"phone":"Invalid phone"
+	}
+}
+```
+here `error` property can be `null`. If `error` property is not `null` then it will contain list of properties with error message as value of that property,
+those property represents field name in the submitted form. This error message most likely be generated on the api which accepts data from fornt end and
+stores it in database after validation. So the error message represents validation errors.
+
+All `500` response will always contains same error structure as in `422` response. Value of `error` can be `null`.
+All other kind of response status does not include any response body, the status code express the reason.
