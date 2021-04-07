@@ -77,7 +77,7 @@ Some global request response rules
 * All `*/update` request (i.e. update single resource) on successful, will respond with status `200`,
   `404` (NOT FOUND) if resource does not exist.
 * On validation error of any request will respond with status `422` and return JSON error object (error key can be `null`):
-```json
+```javascript
 {
 	"status": "error",
 	"msg": "One ore more error(s) in form",
@@ -88,7 +88,7 @@ Some global request response rules
 }
 ```
 * On `500` INTERNAL SERVER ERROR, the response body will be
-```json
+```javascript
 {
 	"status": "error",
 	"msg": "Something bad happend. Please try again later",
@@ -130,7 +130,7 @@ As the OTP is hard coded so many time you will get `422`, so just verify OTP the
 curl -X POST -d "otp=019283" http://127.0.0.1:8888/api/v1/auth/verify
 ```
 **Response** `200` on successful `422` on validation error, `500` on internal server error
-```json
+```javascript
 {
 	"id":2,
 	"first_name":"shek",
